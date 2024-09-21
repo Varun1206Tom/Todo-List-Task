@@ -1,0 +1,318 @@
+<!-- List of Tasks -->
+<div class="slds-box slds-m-around_medium">
+    <div class="slds-grid slds-grid_align-spread slds-m-bottom_small">
+        <h1 class="slds-text-heading_medium">Tasks</h1>
+        <div class="button-group">
+            <button class="slds-button slds-button_brand" (click)="openAddModal()">New Task</button>
+            <button class="slds-button slds-button_neutral">Refresh</button>
+        </div>
+    </div>
+
+    <div class="slds-form-element slds-m-bottom_small">
+        <label class="slds-form-element__label" for="search">Search</label>
+        <div class="slds-form-element__control">
+            <input type="text" id="search" placeholder="Search" class="slds-input">
+        </div>
+    </div>
+
+    <div class="responsive-table-wrapper">
+        <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_fixed-layout">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th scope="col">
+                        <div class="slds-th__action slds-th__action_form">
+                            <input type="checkbox" class="slds-checkbox">
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-th__action">
+                            <span class="slds-truncate">Assigned To</span>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-th__action">
+                            <span class="slds-truncate">Status</span>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-th__action">
+                            <span class="slds-truncate">Due Date</span>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-th__action">
+                            <span class="slds-truncate">Priority</span>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-th__action">
+                            <span class="slds-truncate">Comments</span>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-th__action">
+                            <span class="slds-truncate">Actions</span>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let task of filteredTasks; let i = index">
+                    <td><input type="checkbox" class="slds-checkbox"></td>
+                    <td><a href="#" class="slds-truncate">{{task.assignedTo}}</a></td>
+                    <td>{{task.status}}</td>
+                    <td>{{task.dueDate}}</td>
+                    <td>{{task.priority}}</td>
+                    <td>{{task.description}}</td>
+                    <td>
+                        <button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-label="Edit" (click)="openEditModal(i)">
+                            <svg class="slds-button__icon" aria-hidden="true">
+                                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+                            </svg>
+                        </button>
+                        <button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-label="Delete" (click)="openDeleteModal(i)">
+                            <svg class="slds-button__icon" aria-hidden="true">
+                                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="slds-m-top_medium">
+        <div class="slds-grid slds-grid_align-spread pagination">
+            <div>
+                <span>All Records</span>
+            </div>
+            <div>
+                <button class="slds-button slds-button_neutral">First</button>
+                <button class="slds-button slds-button_neutral">Prev</button>
+                <button class="slds-button slds-button_neutral">1</button>
+                <button class="slds-button slds-button_neutral">Next</button>
+                <button class="slds-button slds-button_neutral">Last</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Add Modal -->
+<section *ngIf="showModal" role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+    class="slds-modal slds-fade-in-open slds-modal_small">
+    <div class="slds-modal__container">
+        <button class="slds-button slds-button_icon slds-modal__close" (click)="closeAddModal()">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Cancel and close</span>
+        </button>
+        <div class="slds-modal__header">
+            <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate" tabindex="-1">New Task</h1>
+        </div>
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+            <div class="row">
+                <div class="col-6">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="select-01">Assigned To</label>
+                        <div class="slds-form-element__control">
+                          <div class="slds-select_container">
+                            <select class="slds-select" id="select-01" [(ngModel)]="newTask.assignedTo">
+                              <option value="">Select…</option>
+                              <option value="Sham">Sham</option>
+                              <option value="User 1">User 1</option>
+                              <option value="User 2">User 2</option>
+                              <option value="Koko">Koko</option>
+                              <option value="Tim">Tim</option>
+                              <option value="Kishan">Kishan</option>
+                            </select>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="select-02">Status</label>
+                        <div class="slds-form-element__control">
+                          <div class="slds-select_container">
+                            <select class="slds-select" id="select-02" [(ngModel)]="newTask.status">
+                              <option value="">Select…</option>
+                              <option value="Started">Started</option>
+                              <option value="Not Started">Not Started</option>
+                            </select>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-6">
+                    <div class="slds-form-element">
+                        <label for="startDate">Due Date</label>
+                        <input id="startDate" class="form-control" type="date" style="border-color: rgb(84, 83, 83);" [(ngModel)]="newTask.dueDate" />
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="select-03" >Priority</label>
+                        <div class="slds-form-element__control">
+                          <div class="slds-select_container">
+                            <select class="slds-select" id="select-03" [(ngModel)]="newTask.priority">
+                              <option value="">Select…</option>
+                              <option value="High">High</option>
+                              <option value="Medium">Medium</option>
+                              <option value="Normal">Normal</option>
+                            </select>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row" style="margin-top: 10px;">
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="textarea-input-id-47">
+                        <abbr class="slds-required" title="required">* </abbr>Description
+                    </label>
+                    <div class="slds-form-element__control">
+                        <textarea id="textarea-input-id-47" placeholder="Enter Description" required class="slds-textarea" [(ngModel)]="newTask.description"></textarea>
+                    </div>
+                </div> 
+            </div>
+        </div>
+        <div class="slds-modal__footer">
+            <button class="slds-button slds-button_neutral" aria-label="Cancel and close" (click)="closeAddModal()">Cancel</button>
+            <button class="slds-button slds-button_brand" (click)="addTask()">Save</button>
+        </div>
+    </div>
+</section>
+
+
+<!-- Edit Modal -->
+<section *ngIf="showEditModal" role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+    class="slds-modal slds-fade-in-open slds-modal_small">
+    <div class="slds-modal__container">
+        <button class="slds-button slds-button_icon slds-modal__close" (click)="closeEditModal()">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Cancel and close</span>
+        </button>
+        <div class="slds-modal__header">
+            <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate" tabindex="-1">Edit Task</h1>
+        </div>
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+            <div class="row">
+                <div class="col-6">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="select-01">Assigned To</label>
+                        <div class="slds-form-element__control">
+                          <div class="slds-select_container">
+                            <select class="slds-select" id="select-01" [(ngModel)]="newTask.assignedTo">
+                              <option value="">Select…</option>
+                              <option>Sham</option>
+                              <option value="User 1">User 1</option>
+                              <option value="User 2">User 2</option>
+                              <option>Koko</option>
+                              <option>Tim</option>
+                            </select>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="status-select">Status</label>
+                        <div class="slds-form-element__control">
+                          <div class="slds-select_container">
+                            <select class="slds-select" id="status-select" [(ngModel)]="newTask.status">
+                              <option value="">Select…</option>
+                              <option>Started</option>
+                              <option>Not Started</option>
+                              <option>In Progress</option>
+                              <option>Completed</option>
+                            </select>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-6">
+                    <div class="slds-form-element">
+                        <label for="startDate">Due Date</label>
+                        <input id="startDate" class="form-control" type="date" style="border-color: rgb(84, 83, 83);" [(ngModel)]="newTask.dueDate" />
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="priority-select">Priority</label>
+                        <div class="slds-form-element__control">
+                          <div class="slds-select_container">
+                            <select class="slds-select" id="priority-select" [(ngModel)]="newTask.priority">
+                              <option value="">Select…</option>
+                              <option>High</option>
+                              <option>Medium</option>
+                              <option>Normal</option>
+                              <option>Low</option>
+                            </select>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row" style="margin-top: 10px;">
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="description-textarea">
+                        <abbr class="slds-required" title="required">* </abbr>Description
+                    </label>
+                    <div class="slds-form-element__control">
+                        <textarea id="description-textarea" placeholder="Enter Description" required class="slds-textarea" [(ngModel)]="newTask.description"></textarea>
+                    </div>
+                </div>
+            </div> 
+
+        </div>
+        <div class="slds-modal__footer">
+            <button class="slds-button slds-button_neutral" aria-label="Cancel and close" (click)="closeEditModal()">Cancel</button>
+            <button class="slds-button slds-button_brand" (click)="updateTask()">Save</button>
+        </div>
+    </div>
+</section>
+
+
+<!-- Delete Modal -->
+<section *ngIf="showDeleteModal" role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+    class="slds-modal slds-fade-in-open slds-modal_small">
+    <div class="slds-modal__container">
+        <button class="slds-button slds-button_icon slds-modal__close" (click)="closeDeleteModal()">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Cancel and close</span>
+        </button>
+        <div class="slds-modal__header" style="background-color: rgb(201, 73, 73); color: white;">
+            <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate" tabindex="-1">Delete Task</h1>
+        </div>
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+            <h4 style="font-size: medium;">Are you Sure You Want to delete </h4>
+            <div style="display: flex; justify-content: flex-end; margin-top: 10px;" > 
+                <button class="slds-button slds-button_neutral " aria-label="Cancel and close" (click)="closeDeleteModal()">No</button>
+                <button class="slds-button slds-button_brand " (click)="deleteTask()">Yes</button>
+            </div>
+        </div>
+        <div>
+            
+        </div>
+        <!-- <div class="slds-modal__footer">
+            <button class="slds-button slds-button_neutral" aria-label="Cancel and close" (click)="closeDeleteModal()">No</button>
+            <button class="slds-button slds-button_brand">Yes</button>
+        </div> -->
+    </div>
+</section>
+
